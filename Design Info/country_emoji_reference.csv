@@ -1,0 +1,67 @@
+countryName,displayAbbrev,emoji
+United States,US,🇺🇸
+Canada,CA,🇨🇦
+Mexico,MX,🇲🇽
+Brazil,BR,🇧🇷
+Argentina,AR,🇦🇷
+Chile,CL,🇨🇱
+Peru,PE,🇵🇪
+Colombia,CO,🇨🇴
+Ecuador,EC,🇪🇨
+Venezuela,VE,🇻🇪
+Bolivia,BO,🇧🇴
+Paraguay,PY,🇵🇾
+Uruguay,UY,🇺🇾
+Panama,PA,🇵🇦
+Costa Rica,CR,🇨🇷
+Nicaragua,NI,🇳🇮
+Honduras,HN,🇭🇳
+Guatemala,GT,🇬🇹
+Belize,BZ,🇧🇿
+Cuba,CU,🇨🇺
+Dominican Republic,DO,🇩🇴
+Haiti,HT,🇭🇹
+Jamaica,JM,🇯🇲
+Bahamas,BS,🇧🇸
+United Kingdom,UK,🇬🇧
+Ireland,IE,🇮🇪
+France,FR,🇫🇷
+Spain,ES,🇪🇸
+Portugal,PT,🇵🇹
+Germany,DE,🇩🇪
+Netherlands,NL,🇳🇱
+Belgium,BE,🇧🇪
+Italy,IT,🇮🇹
+Greece,GR,🇬🇷
+Norway,NO,🇳🇴
+Sweden,SE,🇸🇪
+Finland,FI,🇫🇮
+Denmark,DK,🇩🇰
+Iceland,IS,🇮🇸
+Russia,RU,🇷🇺
+Turkey,TR,🇹🇷
+Morocco,MA,🇲🇦
+Algeria,DZ,🇩🇿
+Tunisia,TN,🇹🇳
+Egypt,EG,🇪🇬
+South Africa,ZA,🇿🇦
+Kenya,KE,🇰🇪
+Tanzania,TZ,🇹🇿
+Ethiopia,ET,🇪🇹
+Uganda,UG,🇺🇬
+Nigeria,NG,🇳🇬
+Ghana,GH,🇬🇭
+India,IN,🇮🇳
+China,CN,🇨🇳
+Japan,JP,🇯🇵
+South Korea,KR,🇰🇷
+Thailand,TH,🇹🇭
+Vietnam,VN,🇻🇳
+Malaysia,MY,🇲🇾
+Indonesia,ID,🇮🇩
+Philippines,PH,🇵🇭
+Australia,AU,🇦🇺
+New Zealand,NZ,🇳🇿
+Papua New Guinea,PG,🇵🇬
+Antarctica,AQ,🇦🇶
+Other,Other,🌎

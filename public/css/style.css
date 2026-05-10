@@ -1,0 +1,144 @@
+/* ────────────────────────────────────────────
+   Geograve — Phase 1 stylesheet
+   Token references live in public/js/config.js
+   ──────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: #162130;
+  color: #e9e4d9;
+  font-family: 'Playfair Display', Georgia, serif;
+  overflow: hidden;
+}
+
+#canvas {
+  position: relative;
+  width: 1366px;
+  height: 768px;
+  margin: 0 auto;
+  background: #162130;
+}
+
+.panel {
+  position: absolute;
+  background: #162130;
+  border: 2px solid #435064;
+  border-radius: 15px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+#header-panel {
+  left: 19.1px;
+  top: 16.5px;
+  width: 512.2px;
+  height: 109.6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#info-panel {
+  left: 18.6px;
+  top: 136.8px;
+  width: 512.3px;
+  height: 614.7px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#globe-panel {
+  left: 547.1px;
+  top: 16.5px;
+  width: 799px;
+  height: 734.9px;
+  padding: 0;
+}
+
+/* ── Wordmark + tagline ── */
+
+.wordmark {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #e9e4d9;
+}
+
+.wordmark .accent {
+  color: #7ec8a0;
+  font-style: italic;
+}
+
+.tagline {
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: #cbcac2;
+  margin-top: 2px;
+}
+
+/* ── Search input ── */
+
+#search-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: #242e3c;
+  border: 2px solid #7ec8a0;
+  border-radius: 6px;
+  color: #e9e4d9;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  outline: none;
+}
+
+#search-input::placeholder {
+  color: #84888d;
+  font-style: italic;
+}
+
+/* ── Globe SVG fills its panel ── */
+
+#globe-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Loading overlay + CSS spinner ── */
+
+#loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(22, 33, 48, 0.55);
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.35s ease;
+}
+
+#loading-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 4px solid rgba(126, 200, 160, 0.18);
+  border-top-color: #7ec8a0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

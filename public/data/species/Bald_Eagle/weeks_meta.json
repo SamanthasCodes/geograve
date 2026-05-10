@@ -1,0 +1,211 @@
+{
+  "1": {
+    "count": 9132,
+    "maxAbundance": 5.3727
+  },
+  "2": {
+    "count": 8876,
+    "maxAbundance": 4.96
+  },
+  "3": {
+    "count": 8917,
+    "maxAbundance": 8.5939
+  },
+  "4": {
+    "count": 9019,
+    "maxAbundance": 8.8019
+  },
+  "5": {
+    "count": 9082,
+    "maxAbundance": 9.8536
+  },
+  "6": {
+    "count": 9146,
+    "maxAbundance": 6.3478
+  },
+  "7": {
+    "count": 9330,
+    "maxAbundance": 7.8965
+  },
+  "8": {
+    "count": 9327,
+    "maxAbundance": 8.1178
+  },
+  "9": {
+    "count": 9487,
+    "maxAbundance": 5.517
+  },
+  "10": {
+    "count": 9641,
+    "maxAbundance": 5.0917
+  },
+  "11": {
+    "count": 9794,
+    "maxAbundance": 5.4346
+  },
+  "12": {
+    "count": 10098,
+    "maxAbundance": 4.522
+  },
+  "13": {
+    "count": 10562,
+    "maxAbundance": 12.169
+  },
+  "14": {
+    "count": 10606,
+    "maxAbundance": 18.9778
+  },
+  "15": {
+    "count": 10605,
+    "maxAbundance": 4.8999
+  },
+  "16": {
+    "count": 10668,
+    "maxAbundance": 5.1947
+  },
+  "17": {
+    "count": 10731,
+    "maxAbundance": 5.9692
+  },
+  "18": {
+    "count": 10421,
+    "maxAbundance": 6.2065
+  },
+  "19": {
+    "count": 10686,
+    "maxAbundance": 5.3733
+  },
+  "20": {
+    "count": 10461,
+    "maxAbundance": 11.7956
+  },
+  "21": {
+    "count": 10807,
+    "maxAbundance": 9.9251
+  },
+  "22": {
+    "count": 11174,
+    "maxAbundance": 6.7389
+  },
+  "23": {
+    "count": 11771,
+    "maxAbundance": 7.1662
+  },
+  "24": {
+    "count": 12201,
+    "maxAbundance": 7.9039
+  },
+  "25": {
+    "count": 12577,
+    "maxAbundance": 9.2045
+  },
+  "26": {
+    "count": 12871,
+    "maxAbundance": 11.1785
+  },
+  "27": {
+    "count": 12675,
+    "maxAbundance": 11.0885
+  },
+  "28": {
+    "count": 12766,
+    "maxAbundance": 11.2752
+  },
+  "29": {
+    "count": 12256,
+    "maxAbundance": 10.8105
+  },
+  "30": {
+    "count": 12300,
+    "maxAbundance": 8.0905
+  },
+  "31": {
+    "count": 11990,
+    "maxAbundance": 5.0559
+  },
+  "32": {
+    "count": 11446,
+    "maxAbundance": 5.1047
+  },
+  "33": {
+    "count": 11233,
+    "maxAbundance": 5.187
+  },
+  "34": {
+    "count": 11058,
+    "maxAbundance": 5.0933
+  },
+  "35": {
+    "count": 10657,
+    "maxAbundance": 4.8115
+  },
+  "36": {
+    "count": 10483,
+    "maxAbundance": 4.2381
+  },
+  "37": {
+    "count": 10302,
+    "maxAbundance": 3.2518
+  },
+  "38": {
+    "count": 10045,
+    "maxAbundance": 3.1819
+  },
+  "39": {
+    "count": 10040,
+    "maxAbundance": 3.6943
+  },
+  "40": {
+    "count": 10370,
+    "maxAbundance": 3.3329
+  },
+  "41": {
+    "count": 10774,
+    "maxAbundance": 3.367
+  },
+  "42": {
+    "count": 10812,
+    "maxAbundance": 3.0949
+  },
+  "43": {
+    "count": 10658,
+    "maxAbundance": 3.8482
+  },
+  "44": {
+    "count": 10466,
+    "maxAbundance": 4.5761
+  },
+  "45": {
+    "count": 10537,
+    "maxAbundance": 5.7859
+  },
+  "46": {
+    "count": 10618,
+    "maxAbundance": 6.5351
+  },
+  "47": {
+    "count": 10362,
+    "maxAbundance": 7.5041
+  },
+  "48": {
+    "count": 10370,
+    "maxAbundance": 8.1173
+  },
+  "49": {
+    "count": 10170,
+    "maxAbundance": 7.5534
+  },
+  "50": {
+    "count": 9951,
+    "maxAbundance": 7.4571
+  },
+  "51": {
+    "count": 9655,
+    "maxAbundance": 9.7684
+  },
+  "52": {
+    "count": 9508,
+    "maxAbundance": 7.0953
+  },
+  "globalMax": 18.9778
+}

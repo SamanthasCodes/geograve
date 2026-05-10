@@ -1,0 +1,544 @@
+GEOGRAVE DATA FOLDER GUIDE
+D3 Implementation Notes
+
+Last updated: 2026-05-06
+
+Purpose
+This document explains what is included in the HW3 Data folder and how the D3 team should use each file. I will share a OneDrive link to the full HW3 folder, which includes the Data folder and Design Info folder.
+
+Canva design reference:
+https://canva.link/f0pljxttt29hw8d
+
+Important folders:
+HW_03/
+  Data/
+  Design Info/
+
+The Design Info folder includes:
+  - icons folder - needed for building D3 webpage
+  - geograve.tokens.js
+  - general loading page reference
+  - interactive page reference
+
+The geograve.tokens.js file defines styling parameters for colors, fonts, panels, badges, timeline, bars, and biome colors. Please reference this file for implementation, but also compare against the Canva design for layout and visual spacing.
+
+
+------------------------------------------------------------
+1. MAIN SPECIES METADATA
+------------------------------------------------------------
+
+Files:
+Data/~featured_species_data.csv
+Data/~featured_species_data.json
+
+Purpose:
+This is the main species lookup file. It should power the search bar/autocomplete, species information card, taxonomy display, IUCN conservation display, population trend display, and future Macaulay Library media references.
+
+Columns:
+SPECIES_CODE
+SCIENTIFIC_NAME
+COMMON_NAME
+ORDER
+FAMILY_COMMON_NAME
+FAMILY_SCIENTIFIC_NAME
+GENUS
+REDLIST_CATEGORY
+POPULATION_TREND
+PHOTO_URL
+PHOTO_CREDIT
+SOUND_URL
+SOUND_CREDIT
+PHOTO_ML_ID
+SOUND_ML_ID
+
+How D3 should use it:
+Load this once when the webpage starts.
+
+Example:
+const speciesData = await d3.json("Data/~featured_species_data.json");
+
+Use this file for:
+- Search/autocomplete
+- Common name
+- Scientific name
+- Family
+- Order
+- Genus
+- IUCN Red List category
+- Population trend
+- Photo/audio links when added
+
+Taxonomy display format:
+COMMON
+SCIENTIFIC
+FAMILY Common • Scientific
+ORDER
+
+Example:
+COMMON
+Barn Swallow
+
+SCIENTIFIC
+Hirundo rustica
+
+FAMILY
+Swallows • Hirundinidae
+
+ORDER
+Passeriformes
+
+
+------------------------------------------------------------
+2. BIOME GLOBE DATA
+------------------------------------------------------------
+
+File:
+Data/biomes_simplified.geojson
+
+Purpose:
+This file contains simplified biome polygons for the D3 globe background.
+
+D3 can load this directly with:
+const biomes = await d3.json("Data/biomes_simplified.geojson");
+
+Each feature has a biome_group property. Use biome_group to color the globe polygons.
+
+Biome colors:
+Forest — #2D6A4F
+Grassland & Savanna — #8DB048
+Desert — #D4956A
+Tundra & Ice — #7FB8D4
+Wetlands & Coast — #2BBFB0
+Ocean — #2E6BA8
+
+Biome color map:
+const biomeColors = {
+  "Forest": "#2D6A4F",
+  "Grassland & Savanna": "#8DB048",
+  "Desert": "#D4956A",
+  "Tundra & Ice": "#7FB8D4",
+  "Wetlands & Coast": "#2BBFB0",
+  "Ocean": "#2E6BA8"
+};
+
+Important note:
+If the GeoJSON still uses "Other" instead of "Ocean", map "Other" to the ocean color:
+
+const biomeColors = {
+  "Forest": "#2D6A4F",
+  "Grassland & Savanna": "#8DB048",
+  "Desert": "#D4956A",
+  "Tundra & Ice": "#7FB8D4",
+  "Wetlands & Coast": "#2BBFB0",
+  "Ocean": "#2E6BA8",
+  "Other": "#2E6BA8"
+};
+
+Example D3 draw pattern:
+svg.selectAll(".biome")
+  .data(biomes.features)
+  .enter()
+  .append("path")
+  .attr("class", "biome")
+  .attr("d", path)
+  .attr("fill", d => biomeColors[d.properties.biome_group] || "#2E6BA8")
+  .attr("opacity", 0.75);
+
+The path generator should use the same projection as the globe.
+
+
+------------------------------------------------------------
+3. SPECIES FOLDER STRUCTURE
+------------------------------------------------------------
+
+Each featured species has its own folder inside:
+Data/Species/
+
+Folders are named by common name, for example:
+Data/Species/Arctic Tern/
+Data/Species/Barn Swallow/
+Data/Species/Osprey/
+Data/Species/American Robin/
+Data/Species/Ruby-throated Hummingbird/
+
+Each species folder can contain:
+weekly_abundance_27km_long.csv
+weekly_abundance_27km.json
+regional_stats.csv
+image
+audio
+
+The image and audio files will be added manually later. I currently do not have Macaulay Library media finalized, but I will add them by Friday afternoon.
+
+
+------------------------------------------------------------
+4. WEEKLY ABUNDANCE DATA
+------------------------------------------------------------
+
+Files:
+Data/Species/{Common Name}/weekly_abundance_27km.json
+Data/Species/{Common Name}/weekly_abundance_27km_long.csv
+
+Example:
+Data/Species/Barn Swallow/weekly_abundance_27km.json
+
+Purpose:
+This file powers the weekly bird abundance/migration animation on the globe.
+
+Source:
+eBird Status & Trends weekly abundance raster data, processed from TIFF raster into D3-ready JSON/CSV.
+
+Data structure:
+Each row is one abundance point for one species, one week, and one location.
+
+Fields:
+speciesCode
+commonName
+week
+lon
+lat
+abundance
+
+Example JSON row:
+{
+  "speciesCode": "barswa",
+  "commonName": "Barn Swallow",
+  "week": 1,
+  "lon": -97.5,
+  "lat": 29.2,
+  "abundance": 0.034
+}
+
+How D3 should use it:
+When a user selects a species, load that species' weekly JSON file.
+
+Example:
+const weeklyData = await d3.json(
+  `Data/Species/${commonName}/weekly_abundance_27km.json`
+);
+
+Group by week:
+const dataByWeek = d3.group(weeklyData, d => +d.week);
+
+Then use the selected week to update the globe points or heat layer:
+function updateWeek(week) {
+  const points = dataByWeek.get(week) || [];
+
+  svg.selectAll(".abundance-point")
+    .data(points, d => `${d.lon},${d.lat}`)
+    .join(
+      enter => enter.append("circle")
+        .attr("class", "abundance-point")
+        .attr("r", d => abundanceScale(d.abundance))
+        .attr("fill", "#7EC8A0")
+        .attr("opacity", 0.65),
+      update => update,
+      exit => exit.remove()
+    )
+    .attr("cx", d => projection([+d.lon, +d.lat])?.[0])
+    .attr("cy", d => projection([+d.lon, +d.lat])?.[1]);
+}
+
+Timeline:
+This data is weekly and should support a 52-week animation.
+
+
+------------------------------------------------------------
+5. REGIONAL STATS DATA
+------------------------------------------------------------
+
+File:
+Data/Species/{Common Name}/regional_stats.csv
+
+Example:
+Data/Species/Barn Swallow/regional_stats.csv
+
+Purpose:
+This file powers the Distribution by Region bar chart.
+
+Source:
+eBird Status & Trends regional summary data.
+
+How D3 should use it:
+When a user selects a species, load the regional stats CSV for that species.
+
+Example:
+const regionalStats = await d3.csv(
+  `Data/Species/${commonName}/regional_stats.csv`
+);
+
+The exact columns may vary slightly depending on eBird output, but the file should provide region-level population/distribution summaries for the selected species.
+
+Use these exact labels in the page, not "Breeding Season" or "Migration Season".
+
+The bar chart title should use:
+DISTRIBUTION BY REGION • ALL YEAR
+DISTRIBUTION BY REGION • BREEDING
+DISTRIBUTION BY REGION • WINTERING
+DISTRIBUTION BY REGION • MIGRATION
+
+SEASON LABEL MAPPING FOR REGIONAL STATS
+
+The eBird regional stats file uses these season values:
+
+breeding
+nonbreeding
+prebreeding_migration
+postbreeding_migration
+
+Our webpage should use simpler user-facing labels:
+
+All Year
+Breeding
+Wintering
+Migration
+
+Use this mapping in D3:
+
+All Year = breeding + nonbreeding + prebreeding_migration + postbreeding_migration
+Breeding = breeding
+Wintering = nonbreeding
+Migration = prebreeding_migration + postbreeding_migration
+
+Suggested JS mapping:
+
+const seasonMap = {
+  "All Year": ["breeding", "nonbreeding", "prebreeding_migration", "postbreeding_migration"],
+  "Breeding": ["breeding"],
+  "Wintering": ["nonbreeding"],
+  "Migration": ["prebreeding_migration", "postbreeding_migration"]
+};
+
+For the Distribution by Region bar chart, filter regional_stats.csv using the selected UI label.
+
+Example:
+If the user selects "Breeding", use rows where season == "breeding".
+If the user selects "Wintering", use rows where season == "nonbreeding".
+If the user selects "Migration", combine rows from both migration seasons:
+  prebreeding_migration
+  postbreeding_migration
+
+Important note:
+For Migration and All Year, multiple eBird seasons are combined. If percentages are summed directly, totals may exceed 100 because the rows represent seasonal summaries. To keep the bar chart readable, group by region, sum the selected seasonal values, then normalize the displayed percentages so the selected category totals to 100%.
+
+Suggested display titles:
+
+DISTRIBUTION BY REGION • ALL YEAR
+DISTRIBUTION BY REGION • BREEDING
+DISTRIBUTION BY REGION • WINTERING
+DISTRIBUTION BY REGION • MIGRATION
+
+Country abbreviations and emojis: - there is a .csv and .json file with emojis, names and abbreviations
+Use emoji flags/icons with abbreviated country (use full country name unless too long) or region labels in the bar chart.
+
+There
+Examples:
+🇺🇸 US
+🇨🇦 CA
+🇲🇽 MX
+🌎 Other
+
+For other countries, use the corresponding flag emoji and short country label where possible.
+
+
+------------------------------------------------------------
+6. IUCN CONSERVATION DATA
+------------------------------------------------------------
+
+IUCN fields are already joined into:
+Data/~featured_species_data.csv
+Data/~featured_species_data.json
+
+Fields:
+REDLIST_CATEGORY
+POPULATION_TREND
+
+Display:
+Risk: Vulnerable
+Population: Decreasing
+
+Do not display "Overall Trend." Use "Population" or "Population Trend."
+
+Red List Category colors needed for this project:
+Least Concern — #7EC8A0
+Near Threatened — #C9A84C
+Vulnerable — #D4956A
+
+Population Trend colors needed for this project:
+Increasing — #7EC8A0
+Stable — #7FB8D4
+Decreasing — #E05A5A
+
+Population trend text:
+Print the trend as:
+Population: Increasing
+Population: Stable
+Population: Decreasing
+
+
+Suggested JS maps:
+const redListColors = {
+  "Least Concern": "#7EC8A0",
+  "Near Threatened": "#C9A84C",
+  "Vulnerable": "#D4956A"
+};
+
+const populationTrendColors = {
+  "Increasing": "#7EC8A0",
+  "Stable": "#7FB8D4",
+  "Decreasing": "#E05A5A"
+};
+
+
+------------------------------------------------------------
+7. MACAULAY LIBRARY MEDIA
+------------------------------------------------------------
+
+I currently do not have the Macaulay Library media files finalized. I will add them by Friday afternoon.
+
+Media-related fields in the master species file:
+PHOTO_URL
+PHOTO_CREDIT
+SOUND_URL
+SOUND_CREDIT
+PHOTO_ML_ID
+SOUND_ML_ID
+
+ML_ID means Macaulay Library media asset ID. It is useful for tracking which exact photo or audio file was used.
+
+For this homework assignment, we are not using detailed per-media credit display inside the UI. General credits will be included at the bottom of the page.
+
+The image and audio files will be placed manually in each species folder when ready.
+
+Expected local file locations:
+Data/Species/{Common Name}/image
+Data/Species/{Common Name}/audio
+
+D3 can use either:
+- local file paths stored in PHOTO_URL and SOUND_URL, or
+- a consistent folder convention based on the selected common name.
+
+Example:
+PHOTO_URL = Data/Species/Barn Swallow/image
+SOUND_URL = Data/Species/Barn Swallow/audio
+
+
+------------------------------------------------------------
+8. DESIGN TOKENS
+------------------------------------------------------------
+
+File:
+Design Info/geograve.tokens.js
+
+Purpose:
+This file defines the styling constants for the project.
+
+It includes:
+- background colors
+- panel colors
+- text colors
+- accent colors
+- biome colors
+- red list category colors
+- population trend colors
+- font sizes
+- badge styles
+- bar styles
+- timeline styles
+- panel dimensions
+
+Please reference this file when implementing D3 styling.
+
+Also reference the Canva design:
+https://canva.link/f0pljxttt29hw8d
+
+The Canva design should guide layout, spacing, panel placement, and visual hierarchy.
+
+
+------------------------------------------------------------
+9. RECOMMENDED D3 LOADING FLOW
+------------------------------------------------------------
+
+On page load:
+const speciesData = await d3.json("Data/~featured_species_data.json");
+const biomes = await d3.json("Data/biomes_simplified.geojson");
+
+Use these to:
+- draw biome globe
+- populate search bar
+- display landing page suggestions
+
+When a species is selected:
+const commonName = selectedSpecies.COMMON_NAME;
+
+const weeklyData = await d3.json(
+  `Data/Species/${commonName}/weekly_abundance_27km.json`
+);
+
+const regionalStats = await d3.csv(
+  `Data/Species/${commonName}/regional_stats.csv`
+);
+
+Then update:
+- species card
+- taxonomy
+- photo/audio
+- IUCN risk
+- population trend
+- distribution by region bar chart
+- weekly globe animation
+
+
+------------------------------------------------------------
+10. RAW eBIRD STATUS & TRENDS FILES
+------------------------------------------------------------
+
+The raw eBird files are stored in:
+Data/eBird/status_trends_raw/
+
+These are intermediate downloaded TIFF files. They are not meant to be loaded by D3.
+
+D3 should use:
+Data/~featured_species_data.json
+Data/biomes_simplified.geojson
+Data/Species/{Common Name}/weekly_abundance_27km.json
+Data/Species/{Common Name}/regional_stats.csv
+
+Do not load TIFF files directly in the browser.
+
+
+------------------------------------------------------------
+11. GENERAL SOURCE CREDITS
+------------------------------------------------------------
+
+Use general credits at the bottom of the webpage or in the final write-up:
+
+Data sources:
+eBird taxonomy and Status & Trends data — Cornell Lab of Ornithology / eBird
+IUCN Red List data — IUCN Red List of Threatened Species
+Biome data — RESOLVE Ecoregions
+Photos and audio — Cornell Lab of Ornithology | Macaulay Library
+
+Detailed Macaulay media credits are not required in the UI for this homework assignment, but ML IDs and media fields are included in the dataset for tracking.
+
+
+------------------------------------------------------------
+12. QUICK IMPLEMENTATION SUMMARY
+------------------------------------------------------------
+
+Main metadata:
+Data/~featured_species_data.json
+
+Globe biome layer:
+Data/biomes_simplified.geojson
+
+For selected species:
+Data/Species/{Common Name}/weekly_abundance_27km.json
+Data/Species/{Common Name}/regional_stats.csv
+Data/Species/{Common Name}/image
+Data/Species/{Common Name}/audio
+
+Design:
+Design Info/geograve.tokens.js
+Design Info/icons/
+Canva reference: https://canva.link/f0pljxttt29hw8d

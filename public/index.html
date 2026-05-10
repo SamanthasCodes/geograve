@@ -1,14 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Geograve</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Geograve — Mapping the Avian World</title>
+  <link rel="icon" href="data:,">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
+
 <body>
-  <h1>Geograve</h1>
-  <p>Baback Elmieh,Samantha Eaton,Julio Chavez</p>
-  <p>Repository: <a href="https://gitlab.cs.washington.edu/cse512/26sp/a3/geograve">https://gitlab.cs.washington.edu/cse512/26sp/a3/geograve</a></p>
-  <script src="main.js"></script>
+  <div id="canvas">
+
+    <div id="header-panel" class="panel">
+      <h1 class="wordmark">Geogr<span class="accent">ave</span></h1>
+      <p class="tagline">Mapping the Avian World</p>
+    </div>
+
+    <div id="info-panel" class="panel">
+      <input id="search-input" type="text" placeholder="Search a species…" autocomplete="off" />
+      <!-- Phase 2: species card renders here -->
+    </div>
+
+    <div id="globe-panel" class="panel">
+      <svg id="globe-svg"></svg>
+      <div id="loading-overlay">
+        <div class="spinner" aria-label="Loading map"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/globe.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
