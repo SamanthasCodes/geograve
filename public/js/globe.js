@@ -22,7 +22,10 @@ Geograve.globe = (function () {
   const weekCache = new Map();
 
   function create(svgEl) {
-    const PANEL = Geograve.PANEL_GLOBE;
+    // Use the SVG-only inner viewport (PANEL_GLOBE_SVG), not the outer
+    // panel dims (PANEL_GLOBE), so the projected globe fits the SVG's
+    // allocated flex row between the timeline (top) and legend (bottom).
+    const PANEL = Geograve.PANEL_GLOBE_SVG || Geograve.PANEL_GLOBE;
     const W = PANEL.w;
     const H = PANEL.h;
 

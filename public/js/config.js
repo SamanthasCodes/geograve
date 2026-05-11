@@ -128,6 +128,12 @@ const Geograve = {
   PANEL_HEADER: { w: 512.2, h: 109.6, x: 19.1,  y: 16.5  },
   PANEL_INFO:   { w: 512.3, h: 614.7, x: 18.6,  y: 136.8 },
   PANEL_GLOBE:  { w: 799,   h: 734.9, x: 547.1, y: 16.5  },
+  // Inner SVG viewport inside #globe-panel after timeline (top) and legend
+  // (bottom) flex rows are subtracted. Used by globe.js for the projection
+  // scale/translate/viewBox so the rendered globe matches the rendered SVG
+  // dimensions exactly. Keep in sync with the #globe-svg flex allocation
+  // in css/style.css.
+  PANEL_GLOBE_SVG: { w: 799, h: 600 },
   PANEL_BORDER_RADIUS: 15,
   PANEL_STROKE_WIDTH:  2,
   PANEL_PADDING:       18,
