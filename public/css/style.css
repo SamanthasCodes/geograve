@@ -388,6 +388,139 @@ html, body {
   white-space: nowrap;
 }
 
+/* ── Regional distribution bar chart (Phase 4) ── */
+
+.species-chart {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;  /* tooltip anchors against this container */
+}
+
+/* ── Bar-row hover tooltip (Phase 4C) ── */
+
+.bar-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  background: #162130;
+  border: 1px solid #7ec8a0;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  color: #e9e4d9;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.bar-tooltip.is-visible {
+  opacity: 1;
+}
+
+.bar-tooltip .tt-region {
+  font-weight: 700;
+  color: #7ec8a0;
+}
+
+.bar-tooltip .tt-value {
+  color: #e9e4d9;
+  margin-top: 2px;
+}
+
+.bar-tooltip .tt-peak {
+  color: #9da2a4;
+  font-style: italic;
+  margin-top: 1px;
+}
+
+.section-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12.5px;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  letter-spacing: 1px;
+}
+
+.section-heading .label {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #84888d;
+}
+
+.section-heading .modifier {
+  color: #7ec8a0;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.season-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.season-tab {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: #9da2a4;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.season-tab:hover:not(.is-disabled):not(.is-active) {
+  color: #cbcac2;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.season-tab.is-active {
+  color: #7ec8a0;
+  border-color: #7ec8a0;
+}
+
+.season-tab.is-disabled {
+  color: #50545a;
+  border-color: rgba(255, 255, 255, 0.06);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bar-chart {
+  display: block;
+  width: 100%;
+  /* height set inline by chart.js per row count */
+}
+
+.bar-chart .bar-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  fill: #e9e4d9;
+  dominant-baseline: middle;
+}
+
+.bar-chart .bar-label.is-other {
+  fill: #84888d;
+  font-style: italic;
+}
+
+.bar-chart .bar-percent {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  fill: #e9e4d9;
+  dominant-baseline: middle;
+  text-anchor: end;
+}
+
 /* ── Globe SVG fills its panel ── */
 
 #globe-svg {

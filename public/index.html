@@ -27,6 +27,20 @@
         <input id="search-input" type="text" placeholder="Search a species…" autocomplete="off" />
       </div>
       <div id="species-card" class="species-card"></div>
+
+      <div id="species-chart" class="species-chart">
+        <div class="section-heading">
+          <span class="label">DISTRIBUTION BY REGION</span>
+          <span class="modifier">• All Year</span>
+        </div>
+        <div class="season-tabs">
+          <button type="button" class="season-tab is-active" data-season="all">All Year</button>
+          <button type="button" class="season-tab"            data-season="breeding">Breeding</button>
+          <button type="button" class="season-tab"            data-season="migration">Migration</button>
+          <button type="button" class="season-tab"            data-season="wintering">Wintering</button>
+        </div>
+        <svg class="bar-chart"></svg>
+      </div>
     </div>
 
     <div id="globe-panel" class="panel">
@@ -66,10 +80,12 @@
   </div>
 
   <script src="js/config.js"></script>
+  <script src="data/country_emoji.js"></script>
   <script src="js/globe.js"></script>
   <script src="js/search.js"></script>
   <script src="js/card.js"></script>
   <script src="js/timeline.js"></script>
+  <script src="js/chart.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

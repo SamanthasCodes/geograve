@@ -34,14 +34,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // Phase 3C: mount the timeline UI (play button, scrub track, label).
     Geograve.timeline.init();
 
-    // Phase 2C + 3C: when the user picks a species, render the card and
-    // hand the species to the timeline so it can load week 1 and stand by
-    // for the play press.
+    // Phase 4B: mount the regional distribution bar chart.
+    Geograve.chart.init(document.getElementById("species-chart"));
+
+    // Phase 2C + 3C + 4B: when the user picks a species, render the
+    // card, hand the species to the timeline (week 1, paused), and feed
+    // the chart its regional_stats.csv for the All Year tab.
     const cardContainer = document.getElementById("species-card");
     document.addEventListener("species-selected", function (e) {
       Geograve.state.selectedSpecies = e.detail;
       Geograve.card.render(e.detail, cardContainer);
       Geograve.timeline.onSpeciesSelected(e.detail);
+      Geograve.chart.onSpeciesSelected(e.detail);
     });
 
     // Hide the loading overlay (CSS transitions opacity).
