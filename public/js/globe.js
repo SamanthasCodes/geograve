@@ -14,6 +14,7 @@ Geograve.globe = (function () {
   let sphereG = null;
   let pointsG = null;
   let pendingFrame = false;
+  let layerRefs = {};
 
   // Per-(slug+week) JSON cache. Keys are "<slug>/<week>", values are the
   // Promise returned by d3.json, so concurrent callers of loadWeek share
@@ -49,6 +50,15 @@ Geograve.globe = (function () {
     graticuleG = svg.append("g").attr("class", "graticule-layer");
     // Abundance points draw on top of biomes + graticule (Phase 3).
     pointsG = svg.append("g").attr("class", "points-layer");
+
+    // Layer registry for the debug toggles exposed below. Keys are the
+    // labels user code passes to toggleLayer / setLayerVisible.
+    layerRefs = {
+      sphere:    sphereG,
+      biomes:    biomesG,
+      graticule: graticuleG,
+      points:    pointsG,
+    };
   }
 
   // ── GeoJSON winding-order fix ──
@@ -187,7 +197,11 @@ Geograve.globe = (function () {
 
   function renderAbundancePoints(points, globalMax) {
     if (!pointsG) return;
-    const scale = d3.scaleSqrt().domain([0, globalMax || 1]).range([0, 8]);
+    const sizeScale  = d3.scaleSqrt().domain([0, globalMax || 1]).range([0, 8]);
+    // Sequential Plasma heatmap: low abundance → deep blue, high → yellow.
+    // Reads as a true density encoding on top of the dark navy backdrop.
+    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+                         .domain([0, globalMax || 1]);
 
     pointsG.selectAll("circle.point")
       .data(points || [], function (d) { return d.lat + "," + d.lon; })
@@ -195,13 +209,13 @@ Geograve.globe = (function () {
         function (enter) {
           return enter.append("circle")
             .attr("class", "point")
-            .attr("fill", Geograve.COLOR_ACCENT)
-            .attr("fill-opacity", 0.65)
+            .attr("fill-opacity", 0.75)
             .attr("stroke", "none")
             .attr("pointer-events", "none");
         }
       )
-      .attr("r", function (d) { return scale(d.abundance); });
+      .attr("r",    function (d) { return sizeScale(d.abundance);  })
+      .attr("fill", function (d) { return colorScale(d.abundance); });
 
     // Initial visibility + cx/cy pass.
     refreshPointPositions();
@@ -210,6 +224,39 @@ Geograve.globe = (function () {
   function clearPoints() {
     if (!pointsG) return;
     pointsG.selectAll("*").remove();
+  }
+
+  // ── Debug layer toggles ──
+  // For investigating render artifacts in DevTools. Layers: "sphere",
+  // "biomes", "graticule", "points". Usage:
+  //   Geograve.globe.toggleLayer("points")     // flip current visibility
+  //   Geograve.globe.setLayerVisible("biomes", false)
+  //   Geograve.globe.listLayers()              // ["sphere","biomes",...]
+
+  function toggleLayer(name) {
+    const sel = layerRefs[name];
+    if (!sel) {
+      console.warn(
+        'Geograve.globe.toggleLayer: unknown layer "' + name + '". Available: ' +
+        Object.keys(layerRefs).join(", ")
+      );
+      return;
+    }
+    const node = sel.node();
+    const wasVisible = node.style.display !== "none";
+    node.style.display = wasVisible ? "none" : "";
+    console.log('layer "' + name + '" → ' + (wasVisible ? "hidden" : "visible"));
+    return !wasVisible;
+  }
+
+  function setLayerVisible(name, visible) {
+    const sel = layerRefs[name];
+    if (!sel) return;
+    sel.node().style.display = visible ? "" : "none";
+  }
+
+  function listLayers() {
+    return Object.keys(layerRefs);
   }
 
   function enableDrag() {
@@ -240,6 +287,10 @@ Geograve.globe = (function () {
     loadWeek,
     prefetchWeek,
     renderAbundancePoints,
-    clearPoints
+    clearPoints,
+    // Debug helpers (Phase 3 LL-5 investigation)
+    toggleLayer,
+    setLayerVisible,
+    listLayers,
   };
 })();
