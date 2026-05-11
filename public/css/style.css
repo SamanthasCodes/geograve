@@ -23,6 +23,11 @@ html, body {
   height: 768px;
   margin: 0 auto;
   background: #162130;
+  /* Phase 4-1A: shrink to fit common laptop viewports at 100 % browser zoom.
+     `zoom` is layout-aware (unlike `transform: scale`) so hit-testing and
+     event coordinates stay correct. Supported in all Chromium browsers and
+     Firefox 126+; older Firefox renders at 100 % which is acceptable. */
+  zoom: 0.9;
 }
 
 .panel {

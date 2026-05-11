@@ -97,23 +97,34 @@ Geograve.globe = (function () {
     return fc;
   }
 
+  // Per-feature biome color. Extracted so both the `fill` and the
+  // matching-`stroke` (anti-aliasing weld) share one source of truth.
+  function biomeFill(d) {
+    // BIOME_NAME is the canonical RESOLVE field; biome_group is mis-grouped
+    // in the source data. See Geograve.BIOME_NAME_TO_GROUP.
+    const name  = d.properties && d.properties.BIOME_NAME;
+    const group = Geograve.BIOME_NAME_TO_GROUP[name] || "Other";
+    return Geograve.BIOME_COLOR_MAP[group] || Geograve.BIOME_COLOR_MAP["Ocean"];
+  }
+
   function renderBiomes(featureCollection) {
     rewindFeatureCollection(featureCollection);
 
+    // Phase 4-1A coast aliasing mitigation (LL-6 / Phase 1 Q1):
+    //   - opacity 1.0 so adjacent polygons fully overdraw each other
+    //   - stroke = fill (0.5 px) so anti-aliasing under-coverage at shared
+    //     edges is filled in by the stroke
+    //   - shape-rendering: geometricPrecision requests higher-quality AA
     biomesG.selectAll("path.biome")
       .data(featureCollection.features)
       .join("path")
       .attr("class", "biome")
       .attr("d", path)
-      .attr("fill", function (d) {
-        // BIOME_NAME is the canonical RESOLVE field; biome_group is mis-grouped
-        // in the source data. See Geograve.BIOME_NAME_TO_GROUP.
-        const name  = d.properties && d.properties.BIOME_NAME;
-        const group = Geograve.BIOME_NAME_TO_GROUP[name] || "Other";
-        return Geograve.BIOME_COLOR_MAP[group] || Geograve.BIOME_COLOR_MAP["Ocean"];
-      })
-      .attr("opacity", 0.78)
-      .attr("stroke", "none");
+      .attr("fill",           biomeFill)
+      .attr("opacity",        1)
+      .attr("stroke",         biomeFill)
+      .attr("stroke-width",   0.5)
+      .attr("shape-rendering", "geometricPrecision");
   }
 
   function renderGraticule() {
@@ -198,9 +209,15 @@ Geograve.globe = (function () {
     loadWeek(slug, week);
   }
 
+  // Fixed point radius — Plasma color now carries the full abundance
+  // encoding. Before Phase 4-1A this was sizeScale = scaleSqrt([0, max])
+  // .range([0, 8]) which double-encoded with the heatmap. 3.5 px is a
+  // compromise between data-cell resolution (27 km ≈ 1.2 px on this 290-px
+  // globe — too small to read) and visibility.
+  const POINT_RADIUS_PX = 1.2;
+
   function renderAbundancePoints(points, globalMax) {
     if (!pointsG) return;
-    const sizeScale  = d3.scaleSqrt().domain([0, globalMax || 1]).range([0, 8]);
     // Sequential Plasma heatmap: low abundance → deep blue, high → yellow.
     // Reads as a true density encoding on top of the dark navy backdrop.
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
@@ -212,12 +229,12 @@ Geograve.globe = (function () {
         function (enter) {
           return enter.append("circle")
             .attr("class", "point")
+            .attr("r", POINT_RADIUS_PX)
             .attr("fill-opacity", 0.75)
             .attr("stroke", "none")
             .attr("pointer-events", "none");
         }
       )
-      .attr("r",    function (d) { return sizeScale(d.abundance);  })
       .attr("fill", function (d) { return colorScale(d.abundance); });
 
     // Initial visibility + cx/cy pass.
