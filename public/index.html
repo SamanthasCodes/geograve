@@ -23,12 +23,55 @@
     </div>
 
     <div id="info-panel" class="panel">
-      <input id="search-input" type="text" placeholder="Search a species…" autocomplete="off" />
-      <!-- Phase 2: species card renders here -->
+      <div class="search-wrap">
+        <input id="search-input" type="text" placeholder="Search a species…" autocomplete="off" />
+      </div>
+      <div id="species-card" class="species-card"></div>
+
+      <div id="species-chart" class="species-chart">
+        <div class="section-heading">
+          <span class="label">DISTRIBUTION BY REGION</span>
+          <span class="modifier">• All Year</span>
+        </div>
+        <div class="season-tabs">
+          <button type="button" class="season-tab is-active" data-season="all">All Year</button>
+          <button type="button" class="season-tab"            data-season="breeding">Breeding</button>
+          <button type="button" class="season-tab"            data-season="migration">Migration</button>
+          <button type="button" class="season-tab"            data-season="wintering">Wintering</button>
+        </div>
+        <svg class="bar-chart"></svg>
+      </div>
     </div>
 
     <div id="globe-panel" class="panel">
+      <div id="timeline">
+        <button id="timeline-play" class="timeline-play" type="button" aria-label="Play">
+          <img id="timeline-play-icon" src="icons/play.png" alt="" />
+        </button>
+        <div id="timeline-track" class="timeline-track">
+          <div id="timeline-progress" class="timeline-progress"></div>
+        </div>
+        <div id="timeline-label" class="timeline-label">Select a Species</div>
+      </div>
       <svg id="globe-svg"></svg>
+
+      <div id="globe-legend">
+        <div class="legend-row legend-heatmap">
+          <span class="legend-caption">ABUNDANCE</span>
+          <span class="legend-low">low</span>
+          <span class="legend-bar"></span>
+          <span class="legend-high">high</span>
+        </div>
+        <div class="legend-row legend-biomes">
+          <span class="biome-item"><span class="biome-swatch" style="background:#2D6A4F"></span>Forest</span>
+          <span class="biome-item"><span class="biome-swatch" style="background:#8DB048"></span>Grassland &amp; Savanna</span>
+          <span class="biome-item"><span class="biome-swatch" style="background:#D4956A"></span>Desert</span>
+          <span class="biome-item"><span class="biome-swatch" style="background:#7FB8D4"></span>Tundra &amp; Ice</span>
+          <span class="biome-item"><span class="biome-swatch" style="background:#2BBFB0"></span>Wetlands &amp; Coast</span>
+          <span class="biome-item"><span class="biome-swatch" style="background:#2E6BA8"></span>Ocean</span>
+        </div>
+      </div>
+
       <div id="loading-overlay">
         <div class="spinner" aria-label="Loading map"></div>
       </div>
@@ -37,7 +80,12 @@
   </div>
 
   <script src="js/config.js"></script>
+  <script src="data/country_emoji.js"></script>
   <script src="js/globe.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/card.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/chart.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

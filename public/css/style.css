@@ -60,6 +60,152 @@ html, body {
   width: 799px;
   height: 734.9px;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Timeline (Phase 3C) — flex row inside #globe-panel ── */
+
+#timeline {
+  flex: 0 0 auto;
+  height: 28px;
+  margin: 14px 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+#timeline-play {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#timeline-play img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#timeline-play.is-playing img {
+  opacity: 0.6;
+}
+
+#timeline-track {
+  flex: 1 1 auto;
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(67, 80, 100, 0.25);
+  border: 1px solid #435064;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#timeline-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: #7ec8a0;
+  border-radius: 999px;
+  transition: width 0.18s linear;
+  pointer-events: none;
+}
+
+#timeline-label {
+  flex: 0 0 auto;
+  min-width: 110px;
+  text-align: right;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+  color: #cbcac2;
+}
+
+/* ── Bottom-of-globe legend (Phase 3 LL-4 / heatmap + biomes) ── */
+/*    flex row in its own area inside #globe-panel; no longer overlays SVG. */
+
+#globe-legend {
+  flex: 0 0 auto;
+  margin: 6px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  color: #cbcac2;
+  pointer-events: none;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.legend-caption {
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #84888d;
+  flex: 0 0 auto;
+}
+
+.legend-low,
+.legend-high {
+  font-style: italic;
+  color: #84888d;
+  flex: 0 0 auto;
+}
+
+.legend-bar {
+  flex: 1 1 auto;
+  height: 12px;
+  border-radius: 6px;
+  /* d3.interpolatePlasma sampled at 10 evenly-spaced stops */
+  background: linear-gradient(
+    to right,
+    #0d0887 0%,
+    #46039f 11%,
+    #7201a8 22%,
+    #9c179e 33%,
+    #bd3786 44%,
+    #d8576b 56%,
+    #ed7953 67%,
+    #fb9f3a 78%,
+    #fdca26 89%,
+    #f0f921 100%
+  );
+}
+
+.legend-biomes {
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.biome-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.biome-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex: 0 0 auto;
 }
 
 /* ── Wordmark + tagline ── */
@@ -103,12 +249,285 @@ html, body {
   font-style: italic;
 }
 
+/* ── Search dropdown (Phase 2B) ── */
+
+.search-wrap {
+  position: relative;
+}
+
+#search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  background: #242e3c;
+  border: 1px solid #7ec8a0;
+  border-radius: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+#search-dropdown li {
+  padding: 8px 14px;
+  color: #e9e4d9;
+  cursor: pointer;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+#search-dropdown li.highlighted,
+#search-dropdown li:hover {
+  background: #2a3548;
+  color: #7ec8a0;
+}
+
+/* ── Species card (Phase 2C) ── */
+
+.species-card {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.species-card .header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.species-card .header img {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.species-card .header .name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #7ec8a0;
+  line-height: 1.1;
+}
+
+.species-card .taxonomy {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  row-gap: 6px;
+  column-gap: 10px;
+  align-items: baseline;
+}
+
+.species-card .taxonomy .tax-row {
+  display: contents;
+}
+
+.species-card .taxonomy .label {
+  font-size: 15px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #84888d;
+}
+
+.species-card .taxonomy .value {
+  font-size: 15px;
+  color: #e9e4d9;
+}
+
+.species-card .taxonomy .value.scientific {
+  font-style: italic;
+}
+
+.species-card .taxonomy .value.family {
+  color: #cbcac2;
+}
+
+.species-card .media-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.species-card .photo-frame {
+  flex: 0 0 auto;
+  width: 180px;
+  height: 135px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #242e3c;
+}
+
+.species-card .photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.species-card .badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.species-card .badge {
+  display: inline-block;
+  padding: 5px 12px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Regional distribution bar chart (Phase 4) ── */
+
+.species-chart {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;  /* tooltip anchors against this container */
+}
+
+/* ── Bar-row hover tooltip (Phase 4C) ── */
+
+.bar-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  background: #162130;
+  border: 1px solid #7ec8a0;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  color: #e9e4d9;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.bar-tooltip.is-visible {
+  opacity: 1;
+}
+
+.bar-tooltip .tt-region {
+  font-weight: 700;
+  color: #7ec8a0;
+}
+
+.bar-tooltip .tt-value {
+  color: #e9e4d9;
+  margin-top: 2px;
+}
+
+.bar-tooltip .tt-peak {
+  color: #9da2a4;
+  font-style: italic;
+  margin-top: 1px;
+}
+
+.section-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12.5px;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  letter-spacing: 1px;
+}
+
+.section-heading .label {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #84888d;
+}
+
+.section-heading .modifier {
+  color: #7ec8a0;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.season-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.season-tab {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: #9da2a4;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.season-tab:hover:not(.is-disabled):not(.is-active) {
+  color: #cbcac2;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.season-tab.is-active {
+  color: #7ec8a0;
+  border-color: #7ec8a0;
+}
+
+.season-tab.is-disabled {
+  color: #50545a;
+  border-color: rgba(255, 255, 255, 0.06);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bar-chart {
+  display: block;
+  width: 100%;
+  /* height set inline by chart.js per row count */
+}
+
+.bar-chart .bar-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  fill: #e9e4d9;
+  dominant-baseline: middle;
+}
+
+.bar-chart .bar-label.is-other {
+  fill: #84888d;
+  font-style: italic;
+}
+
+.bar-chart .bar-percent {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  fill: #e9e4d9;
+  dominant-baseline: middle;
+  text-anchor: end;
+}
+
 /* ── Globe SVG fills its panel ── */
 
 #globe-svg {
   display: block;
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
+  min-height: 0;
 }
 
 /* ── Loading overlay + CSS spinner ── */

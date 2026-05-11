@@ -31,6 +31,21 @@ const Geograve = {
   COLOR_TREND_STABLE:     "#7FB8D4",
   COLOR_TREND_DECREASING: "#E05A5A",
 
+  // ── IUCN / Trend lookup maps (Phase 2) ──
+  // REDLIST_CATEGORY → badge color
+  IUCN_COLOR_MAP: {
+    "Least Concern":   "#7ec8a0",
+    "Near Threatened": "#C9A84C",
+    "Vulnerable":      "#D4956A"
+  },
+
+  // POPULATION_TREND → badge color
+  TREND_COLOR_MAP: {
+    "Increasing": "#7ec8a0",
+    "Stable":     "#7FB8D4",
+    "Decreasing": "#E05A5A"
+  },
+
   // ── Biome Colors ──
   // NOTE: data file biomes.geojson contains a 6th group "Other" (19 features
   // not covered by the named biomes). We map "Other" to the same color as
@@ -113,6 +128,12 @@ const Geograve = {
   PANEL_HEADER: { w: 512.2, h: 109.6, x: 19.1,  y: 16.5  },
   PANEL_INFO:   { w: 512.3, h: 614.7, x: 18.6,  y: 136.8 },
   PANEL_GLOBE:  { w: 799,   h: 734.9, x: 547.1, y: 16.5  },
+  // Inner SVG viewport inside #globe-panel after timeline (top) and legend
+  // (bottom) flex rows are subtracted. Used by globe.js for the projection
+  // scale/translate/viewBox so the rendered globe matches the rendered SVG
+  // dimensions exactly. Keep in sync with the #globe-svg flex allocation
+  // in css/style.css.
+  PANEL_GLOBE_SVG: { w: 799, h: 600 },
   PANEL_BORDER_RADIUS: 15,
   PANEL_STROKE_WIDTH:  2,
   PANEL_PADDING:       18,
@@ -124,6 +145,15 @@ const Geograve = {
   // ── Animation defaults (Phase 3) ──
   ANIMATION_INTERVAL_MS: 300,
   PREFETCH_WEEKS_AHEAD:  2,
+
+  // Month labels for the timeline (lowercase, per Main Screen design).
+  // Used by Geograve.timeline.weekToMonthLabel().
+  MONTH_NAMES: [
+    "january",  "february", "march",
+    "april",    "may",      "june",
+    "july",     "august",   "september",
+    "october",  "november", "december"
+  ],
 
   // ── Helpers ──
   hexToRgba: function (hex, alpha) {
@@ -141,6 +171,18 @@ const Geograve = {
       strokeWidth:  2,
       borderRadius: 4
     };
+  },
+
+  // Resolve a REDLIST_CATEGORY string to its badge color.
+  // Falls back to muted text color for unknown values so callers never
+  // pass `undefined` into getBadgeStyle.
+  getIucnColor: function (category) {
+    return this.IUCN_COLOR_MAP[category] || this.COLOR_TEXT_MUTED;
+  },
+
+  // Resolve a POPULATION_TREND string to its badge color.
+  getTrendColor: function (trend) {
+    return this.TREND_COLOR_MAP[trend] || this.COLOR_TEXT_MUTED;
   },
 
   // Display name → public/data/species/<slug>/ folder lookup
