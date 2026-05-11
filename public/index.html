@@ -30,6 +30,15 @@
     </div>
 
     <div id="globe-panel" class="panel">
+      <div id="timeline">
+        <button id="timeline-play" class="timeline-play" type="button" aria-label="Play">
+          <img id="timeline-play-icon" src="icons/play.png" alt="" />
+        </button>
+        <div id="timeline-track" class="timeline-track">
+          <div id="timeline-progress" class="timeline-progress"></div>
+        </div>
+        <div id="timeline-label" class="timeline-label">Select a Species</div>
+      </div>
       <svg id="globe-svg"></svg>
       <div id="loading-overlay">
         <div class="spinner" aria-label="Loading map"></div>
@@ -42,6 +51,7 @@
   <script src="js/globe.js"></script>
   <script src="js/search.js"></script>
   <script src="js/card.js"></script>
+  <script src="js/timeline.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

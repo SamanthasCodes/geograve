@@ -31,11 +31,17 @@ document.addEventListener("DOMContentLoaded", function () {
     // Phase 2B: mount the autocomplete search.
     Geograve.search.init(species);
 
-    // Phase 2C: render the species card whenever the user picks a species.
+    // Phase 3C: mount the timeline UI (play button, scrub track, label).
+    Geograve.timeline.init();
+
+    // Phase 2C + 3C: when the user picks a species, render the card and
+    // hand the species to the timeline so it can load week 1 and stand by
+    // for the play press.
     const cardContainer = document.getElementById("species-card");
     document.addEventListener("species-selected", function (e) {
       Geograve.state.selectedSpecies = e.detail;
       Geograve.card.render(e.detail, cardContainer);
+      Geograve.timeline.onSpeciesSelected(e.detail);
     });
 
     // Hide the loading overlay (CSS transitions opacity).

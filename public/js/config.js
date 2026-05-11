@@ -140,6 +140,15 @@ const Geograve = {
   ANIMATION_INTERVAL_MS: 300,
   PREFETCH_WEEKS_AHEAD:  2,
 
+  // Month labels for the timeline (lowercase, per Main Screen design).
+  // Used by Geograve.timeline.weekToMonthLabel().
+  MONTH_NAMES: [
+    "january",  "february", "march",
+    "april",    "may",      "june",
+    "july",     "august",   "september",
+    "october",  "november", "december"
+  ],
+
   // ── Helpers ──
   hexToRgba: function (hex, alpha) {
     const r = parseInt(hex.slice(1, 3), 16);
