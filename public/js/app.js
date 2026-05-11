@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
     Geograve.globe.renderGraticule();
     Geograve.globe.enableDrag();
 
+    // Phase 2B: mount the autocomplete search.
+    Geograve.search.init(species);
+
+    // Phase 2C: render the species card whenever the user picks a species.
+    const cardContainer = document.getElementById("species-card");
+    document.addEventListener("species-selected", function (e) {
+      Geograve.state.selectedSpecies = e.detail;
+      Geograve.card.render(e.detail, cardContainer);
+    });
+
     // Hide the loading overlay (CSS transitions opacity).
     overlay.classList.add("hidden");
   }).catch(function (err) {

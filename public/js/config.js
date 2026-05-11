@@ -31,6 +31,21 @@ const Geograve = {
   COLOR_TREND_STABLE:     "#7FB8D4",
   COLOR_TREND_DECREASING: "#E05A5A",
 
+  // ── IUCN / Trend lookup maps (Phase 2) ──
+  // REDLIST_CATEGORY → badge color
+  IUCN_COLOR_MAP: {
+    "Least Concern":   "#7ec8a0",
+    "Near Threatened": "#C9A84C",
+    "Vulnerable":      "#D4956A"
+  },
+
+  // POPULATION_TREND → badge color
+  TREND_COLOR_MAP: {
+    "Increasing": "#7ec8a0",
+    "Stable":     "#7FB8D4",
+    "Decreasing": "#E05A5A"
+  },
+
   // ── Biome Colors ──
   // NOTE: data file biomes.geojson contains a 6th group "Other" (19 features
   // not covered by the named biomes). We map "Other" to the same color as
@@ -141,6 +156,18 @@ const Geograve = {
       strokeWidth:  2,
       borderRadius: 4
     };
+  },
+
+  // Resolve a REDLIST_CATEGORY string to its badge color.
+  // Falls back to muted text color for unknown values so callers never
+  // pass `undefined` into getBadgeStyle.
+  getIucnColor: function (category) {
+    return this.IUCN_COLOR_MAP[category] || this.COLOR_TEXT_MUTED;
+  },
+
+  // Resolve a POPULATION_TREND string to its badge color.
+  getTrendColor: function (trend) {
+    return this.TREND_COLOR_MAP[trend] || this.COLOR_TEXT_MUTED;
   },
 
   // Display name → public/data/species/<slug>/ folder lookup
