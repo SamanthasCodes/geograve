@@ -37,12 +37,31 @@ document.addEventListener("DOMContentLoaded", function () {
     // Phase 4B: mount the regional distribution bar chart.
     Geograve.chart.init(document.getElementById("species-chart"));
 
-    // Phase 2C + 3C + 4B: when the user picks a species, render the
-    // card, hand the species to the timeline (week 1, paused), and feed
-    // the chart its regional_stats.csv for the All Year tab.
+    // Phase 4-1B: wire the idle-state chips. Each chip dispatches the
+    // same `species-selected` event the search bar fires — every
+    // downstream listener (card, timeline, chart) reacts identically.
+    const emptyState = document.getElementById("empty-state");
+    emptyState.querySelectorAll(".chip").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const name = btn.dataset.commonName;
+        const sp = (Geograve.state.species || []).find(function (s) {
+          return s.COMMON_NAME === name;
+        });
+        if (sp) {
+          document.dispatchEvent(new CustomEvent("species-selected", { detail: sp }));
+        } else {
+          console.warn("Geograve: chip species not found:", name);
+        }
+      });
+    });
+
+    // Phase 2C + 3C + 4B + 4-1B: when the user picks a species, hide
+    // the idle state, render the card, hand the species to the timeline
+    // (week 1, paused), and feed the chart its regional_stats.csv.
     const cardContainer = document.getElementById("species-card");
     document.addEventListener("species-selected", function (e) {
       Geograve.state.selectedSpecies = e.detail;
+      emptyState.style.display = "none";
       Geograve.card.render(e.detail, cardContainer);
       Geograve.timeline.onSpeciesSelected(e.detail);
       Geograve.chart.onSpeciesSelected(e.detail);

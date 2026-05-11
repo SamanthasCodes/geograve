@@ -45,8 +45,37 @@ html, body {
   width: 512.2px;
   height: 109.6px;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+#header-panel .brand {
+  display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.writeup-link {
+  flex: 0 0 auto;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #7ec8a0;
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 1px solid #7ec8a0;
+  border-radius: 6px;
+  background: transparent;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.writeup-link:hover,
+.writeup-link:focus-visible {
+  color: #162130;
+  background: #7ec8a0;
+  outline: none;
 }
 
 #info-panel {
@@ -291,6 +320,69 @@ html, body {
 #search-dropdown li:hover {
   background: #2a3548;
   color: #7ec8a0;
+}
+
+/* ── Idle / welcome state (Phase 4-1B) ── */
+/*    Shown by default; hidden the first time a species is selected. */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 0 8px;
+  text-align: center;
+}
+
+.empty-state .hero-icon {
+  width: 130px;
+  height: 130px;
+  display: block;
+  /* bird.png is 512×512 — plenty for 130 px display, no pixelation. */
+}
+
+.empty-state .tagline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  color: #cbcac2;
+  margin: 0;
+}
+
+.empty-state .try-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #84888d;
+  margin-top: 8px;
+}
+
+.empty-state .chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 380px;
+}
+
+.empty-state .chip {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: #cbcac2;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.empty-state .chip:hover {
+  color: #7ec8a0;
+  border-color: #7ec8a0;
 }
 
 /* ── Species card (Phase 2C) ── */
