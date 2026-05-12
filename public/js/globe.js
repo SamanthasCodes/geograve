@@ -214,7 +214,7 @@ Geograve.globe = (function () {
   // .range([0, 8]) which double-encoded with the heatmap. 3.5 px is a
   // compromise between data-cell resolution (27 km ≈ 1.2 px on this 290-px
   // globe — too small to read) and visibility.
-  const POINT_RADIUS_PX = 1.2;
+  const POINT_RADIUS_PX = 1.0;
 
   function renderAbundancePoints(points, globalMax) {
     if (!pointsG) return;

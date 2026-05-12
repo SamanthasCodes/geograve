@@ -618,6 +618,34 @@ html, body {
   text-anchor: end;
 }
 
+/* ── Data sources / attribution block (Phase 4-2) ── */
+/*    Pinned to the bottom of #info-panel via absolute positioning so its
+      y-position is stable across idle → active transitions (the flex
+      column above rebuilds with different children, which would otherwise
+      cause a 1–2 px reflow drift on margin-top: auto). */
+
+.data-sources {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-sources .sources-line {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 10px;
+  color: #84888d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+  line-height: 1.4;
+  margin: 0;
+}
+
 /* ── Globe SVG fills its panel ── */
 
 #globe-svg {
