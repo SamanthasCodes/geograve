@@ -385,6 +385,26 @@ html, body {
   border-color: #7ec8a0;
 }
 
+.empty-state .play-hint {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #9da2a4;
+  margin: 10px 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.empty-state .play-hint-icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
 /* ── Species card (Phase 2C) ── */
 
 .species-card {
