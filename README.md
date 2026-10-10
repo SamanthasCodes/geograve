@@ -27,8 +27,8 @@ The visualization combines an interactive globe with an animated weekly timeline
 ### 🚀 Team & Contributions
 
 - **Samantha Eaton** — data collection, preprocessing, and UX design
-- **Baback Elmieh** — application development and website implementation
-- **Julio Chavez** — application development and website implementation
+- **[Julio Chavez](https://github.com/Julio-Chavez)** — application development and website implementation
+- **[Baback Elmieh](https://github.com/BabackE)** — application development and website implementation
 
 GeoGrave was developed as a collaborative project for **CSE 512: Data Visualization** at the **University of Washington's Paul G. Allen School of Computer Science & Engineering** (Spring 2026). The project was originally developed through the University of Washington's course GitLab, with the original development history preserved in this repository.
 
